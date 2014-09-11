@@ -1,0 +1,32 @@
+---
+- mime: 'application/pdf'
+  extensions:
+    - 'pdf'
+  signatures:
+    starting:
+      offset: 0
+      hexcodes:
+        - '25504446'
+    trailing:
+      offset: 0
+      hexcodes:
+        - '0a2525454f46'
+        - '0a2525454f460a'
+        - '0d0a2525454f460d0a'
+        - '0d2525454f460d'
+
+- mime: 'image/jpeg'
+  extensions:
+    - 'jpg'
+    - 'jpeg'
+    - 'jfif'
+    - 'jpe'
+  signatures:
+    starting:
+      offset: 0
+      hexcodes:
+        - 'ffd8ffe0XXXX4a46494600'
+    trailing:
+      offset: 0
+      hexcodes:
+        - 'ffd9'
