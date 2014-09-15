@@ -11,7 +11,7 @@ not either currently supported or is an invalid one. If it's the latter,
 try again with a valid mime type. Following are the mime types currently
 supported for validation:
 
-#{Signatures.known_mime_types.sort}
+#{Signatures.instance.known_mime_types.sort}
 EOS
 
     def_delegators :@file, :path, :read, :rewind, :close
@@ -38,7 +38,8 @@ EOS
     end
 
     def valid_mime_type?(expected_mime_type)
-      Signatures.known_mime_types.member?(expected_mime_type)
+      signatures = Signatures.instance.known_mime_types
+      signatures.member?(expected_mime_type)
     end
   end
 end
