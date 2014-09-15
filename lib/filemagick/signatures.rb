@@ -25,5 +25,11 @@ module Filemagick
         sig['extensions']
       end.flatten
     end
+
+    def signatures
+      read_signatures_file!
+
+      @signatures
+    end
   end
 end

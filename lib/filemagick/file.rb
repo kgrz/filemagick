@@ -23,7 +23,14 @@ EOS
 
       read_file!(path_or_io)
 
-      @validator ||= Validator.new(file: file, expected_mime_type: expected_mime_type)
+      @validator ||= Validator.new(
+        file: file,
+        expected_mime_type: expected_mime_type
+      )
+    end
+
+    def valid?
+      @validator.valid?
     end
 
     private
