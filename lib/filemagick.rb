@@ -3,6 +3,8 @@ module Filemagick
   autoload :File,            'filemagick/file'
   autoload :Validator,       'filemagick/validator'
   autoload :Signatures,      'filemagick/signatures'
+  autoload :Errors,           'filemagick/errors'
+
   INVALID_ARGUMENTS = <<EOS
 'Wops! Must supply arguments as a hash with :file and :test_mime as
 keys'

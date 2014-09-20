@@ -12,8 +12,16 @@ module Filemagick
         signature["mime"] == expected_mime_type
       end
 
-      read_starting_bytes!
-      read_trailing_bytes!
+      begin
+        read_starting_bytes!
+        read_trailing_bytes!
+      rescue EOFError => e
+        raise Filemagick::Errors::CannotDetermineSignature
+      rescue Errno::EINVAL => e
+        raise Filemagick::Errors::CannotDetermineSignature
+      ensure
+        @file.close
+      end
     end
 
     # This method processes the file to get the magic number for the type
