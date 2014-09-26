@@ -18,10 +18,10 @@ EOS
     def_delegators :@validator, :valid?
 
     def initialize(path_or_io:, expected_mime_type:)
+      init_file!(path_or_io)
+
       @expected_mime_type = expected_mime_type
       raise INVALID_MIME_TYPE unless valid_mime_type?(expected_mime_type)
-
-      read_file!(path_or_io)
 
       @validator ||= Validator.new(
         file: file,
@@ -35,7 +35,7 @@ EOS
 
     private
 
-    def read_file!(path_or_io)
+    def init_file!(path_or_io)
       if path_or_io.is_a?(IO)
         @file = path_or_io
         @file.rewind

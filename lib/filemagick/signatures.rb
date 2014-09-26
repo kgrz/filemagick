@@ -8,10 +8,6 @@ module Filemagick
     SIGNATURES_FILE = ::File.expand_path('../signatures.yml', __FILE__)
     attr_reader :signatures, :known_extensions, :known_mime_types
 
-    def read_signatures_file!
-      @signatures ||= YAML.load_file SIGNATURES_FILE
-    end
-
     def known_mime_types
       read_signatures_file!
 
@@ -30,6 +26,12 @@ module Filemagick
       read_signatures_file!
 
       @signatures
+    end
+
+    private
+
+    def read_signatures_file!
+      @signatures ||= YAML.load_file SIGNATURES_FILE
     end
   end
 end
