@@ -3,7 +3,8 @@
 First basic version will have an interface where the user will provide
 the expected extension by giving the mime type. The signatures are
 fetched based on this mime type by fetching the entire list of
-extensions and figuring out the starting and trailing bytes.
+extensions and figuring out file-type specific identifiers in the
+(usually) beginning of the file.
 
 Later versions may contain absolute checking based on the extension of
 the file fetched from the filename and the actual extension based on
