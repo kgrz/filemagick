@@ -2,14 +2,15 @@
 # the result
 module Filemagick
   class Validator
-    attr_reader :file, :expected_mime_type, :signatures_object
+    attr_reader :file, :given_extension, :signatures_object
     attr_reader :extracted_starting_signature, :extracted_trailing_signature
 
-    def initialize(file:, expected_mime_type:)
+    def initialize(file, given_extension)
       @file = file
-      @expected_mime_type  = expected_mime_type
-      @signatures_object = Signatures.instance.signatures.find do |signature|
-        signature["mime"] == expected_mime_type
+      @given_extension = given_extension
+
+      @signatures_objects = Signatures.instance.signatures.select do |signature|
+        signature["extensions"].member?(given_extension)
       end
 
       begin
@@ -92,11 +93,11 @@ module Filemagick
     end
 
     def starting_byte_offset
-      @signatures_object["signatures"]["starting"]["offset"]
+      @signatures_object["signatures"]["starting"]["offset"] || 0
     end
 
     def trailing_byte_offset
-      @signatures_object["signatures"]["trailing"]["offset"]
+      @signatures_object["signatures"]["trailing"]["offset"] || 0
     end
 
     def starting_hex_codes
