@@ -1,7 +1,5 @@
 # Filemagick
 
-TODO: Write a gem description
-
 First basic version will have an interface where the user will provide
 the expected extension by giving the mime type. The signatures are
 fetched based on this mime type by fetching the entire list of
@@ -10,6 +8,15 @@ extensions and figuring out the starting and trailing bytes.
 Later versions may contain absolute checking based on the extension of
 the file fetched from the filename and the actual extension based on
 magic number.
+
+The steps for validation are this: (version 0.1)
+
+1. Get the extension,
+2. Figure out the list of hexcodes,
+3. Get the sizes of the hexcodes and get the GCD,
+4. Use the GCD to read that many bytes from the file provided,
+5. Check to see if the bytes from the file correspond with the hexcodes,
+6. Return true or false.
 
 ## Installation
 
