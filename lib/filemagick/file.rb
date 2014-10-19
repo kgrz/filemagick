@@ -23,7 +23,7 @@ EOS
       @expected_mime_type = expected_mime_type
       raise INVALID_MIME_TYPE unless valid_mime_type?(expected_mime_type)
 
-      @validator ||= Validator.new(
+      @validator ||= Filemagick::Validator.new(
         file: file,
         expected_mime_type: expected_mime_type
       )
