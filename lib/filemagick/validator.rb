@@ -2,26 +2,11 @@
 # the result
 module Filemagick
   class Validator
-    attr_reader :file, :given_extension, :signatures_object
+    attr_reader :file, :signatures_object
     attr_reader :extracted_starting_signature
 
-    def initialize(file, given_extension)
+    def initialize(file)
       @file = file
-      @given_extension = given_extension
-
-      @signatures_objects = Signatures.instance.signatures.select do |signature|
-        signature["extensions"].member?(given_extension)
-      end
-
-      begin
-        read_starting_bytes!
-      rescue EOFError => e
-        raise Filemagick::Errors::CannotDetermineSignature
-      rescue Errno::EINVAL => e
-        raise Filemagick::Errors::CannotDetermineSignature
-      ensure
-        @file.close
-      end
     end
 
     # This method processes the file to get the magic number for the type
@@ -40,24 +25,12 @@ module Filemagick
     private
 
     def valid_starting_signature?
-      starting_hex_codes.any? do |valid_hex_signature|
-        extracted_starting_signature =~ %r{\A#{valid_hex_signature}}
-      end
-    end
+      extractor = Extractor.new(file)
+      extractor.process!
+      signatures = Signature.for_file(file)
+      extracted_signature = extractor.extracted_signature
 
-    def file_extension
-      ::File.extname(file).gsub('.', '')
-    end
-
-    def read_starting_bytes!
-      file.rewind
-
-      if starting_byte_offset
-        file.seek(starting_byte_offset, IO::SEEK_CUR)
-      end
-
-      @extracted_starting_signature =
-        file.readpartial(bytes_to_read_from_start).unpack('H*').first
+      extracted_signature =~ signature
     end
 
     # This method returns the max number of bytes required to validate the
