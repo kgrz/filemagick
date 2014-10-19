@@ -25,29 +25,13 @@ module Filemagick
     private
 
     def valid_starting_signature?
-      extractor = Extractor.new(file)
-      extractor.process!
       signatures = Signature.for_file(file)
+      extractor = Extractor.new(file, signatures)
+      extractor.process!
       extracted_signature = extractor.extracted_signature
 
       extracted_signature =~ signature
     end
 
-    # This method returns the max number of bytes required to validate the
-    # signature. That is, if an extension has multiple valid signatures, like
-    # in the case of the jpeg and related file types, this method will return
-    # the maximum number of bytes to out of all the bytes signatures to ensure
-    # correct identification
-    def bytes_to_read_from_start
-      starting_hex_codes.map(&:length).max
-    end
-
-    def starting_byte_offset
-      @signatures_object["signatures"]["starting"]["offset"]
-    end
-
-    def starting_hex_codes
-      @signatures_object["signatures"]["starting"]["hexcodes"]
-    end
   end
 end

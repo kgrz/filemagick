@@ -5,11 +5,11 @@
 module Filemagick
   class Extractor
     attr_reader :file, :extracted_signature
-    def_delegators :@signatures, :bytes_to_read_from_start, :starting_byte_offset
+    def_delegators :@signature, :bytes_to_read_from_start, :starting_byte_offset
 
-    def initialize(file)
+    def initialize(file, signatures)
       @file = file
-      @signatures = Signatures.instance.for_file(file)
+      @signatures = signatures
     end
 
     def process!
@@ -36,6 +36,23 @@ module Filemagick
 
       @extracted_signature =
         file.readpartial(bytes_to_read_from_start).unpack('H*').first
+    end
+
+    # This method returns the max number of bytes required to validate the
+    # signature. That is, if an extension has multiple valid signatures, like
+    # in the case of the jpeg and related file types, this method will return
+    # the maximum number of bytes to out of all the bytes signatures to ensure
+    # correct identification
+    def bytes_to_read_from_start
+      starting_hex_codes.map(&:length).max
+    end
+
+    def starting_byte_offset
+      @signatures["signature"]["offset"]
+    end
+
+    def starting_hex_codes
+      @signatures["signature"]["hexcodes"]
     end
   end
 end

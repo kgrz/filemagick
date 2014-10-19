@@ -5,13 +5,14 @@
 module Filemagick
   class Signature
     def for_file(file)
-      mime_types = MIME::Types.of(file).map(&:content_type)
+      mime_types = MIME::Types.of(file).map(&:extensions)
+      extension = File.extname(file)
 
-      signature_objects = Signatures.instance.signatures.select do |mime, _|
-        mime_types.member? mime
+      signature_objects = Signatures.instance.signatures.select do |signature|
+        signature["extensions"].member? extension
       end
 
-      signature_objects.map { |_, signature| signature['hex_codes'] }
+      signature_objects.map { |signature| signature['signatures'] }
     end
   end
 end
