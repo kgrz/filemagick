@@ -1,8 +1,10 @@
+require 'filemagick/signatures'
 
 module Filemagick
-  autoload :File,            'filemagick/file'
-  autoload :Validator,       'filemagick/validator'
-  autoload :Signatures,      'filemagick/signatures'
+  autoload :File,             'filemagick/file'
+  autoload :Validator,        'filemagick/validator'
+  autoload :Signature,        'filemagick/signature'
+  autoload :Extractor,        'filemagick/extractor'
   autoload :Errors,           'filemagick/errors'
 
   INVALID_ARGUMENTS = <<EOS

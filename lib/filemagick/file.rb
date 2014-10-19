@@ -23,10 +23,10 @@ EOS
     def initialize(path_or_io)
       init_file!(path_or_io)
 
-      @given_extension = File.extname(path_or_io)
+      @given_extension = ::File.extname(path_or_io)
       raise EXTENSION_ABSENT if given_extension.empty?
 
-      @validator ||= Filemagick::Validator.new(file, given_extension)
+      @validator ||= Filemagick::Validator.new(file)
     end
 
     def valid?
@@ -36,13 +36,13 @@ EOS
     private
 
     def init_file!(path_or_io)
-      raise FILE_UNREADABLE unless File.readable?(path_or_io)
 
       if path_or_io.is_a?(IO)
+        raise FILE_UNREADABLE unless ::File.readable?(path_or_io)
         @file = path_or_io
         @file.rewind
       else
-        raise INVALID_FILE unless File.exists?(path_or_io)
+        raise INVALID_FILE unless ::File.exists?(path_or_io)
         @file = ::File.new(path_or_io)
       end
     end

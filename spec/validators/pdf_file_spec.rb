@@ -3,10 +3,7 @@ require 'spec_helper'
 module Filemagick
   describe File do
     let(:file) do
-      described_class.new(
-        path_or_io: pdf_file,
-        expected_mime_type: 'application/pdf'
-      )
+      described_class.new(pdf_file)
     end
 
     context 'Valid PDF' do

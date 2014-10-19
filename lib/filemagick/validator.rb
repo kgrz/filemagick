@@ -26,7 +26,7 @@ module Filemagick
 
     def valid_starting_signature?
       signatures = Signature.for_file(file)
-      extractor = Extractor.new(file, signatures)
+      extractor  = Extractor.new(file, signatures)
       extractor.process!
       extracted_signature = extractor.extracted_signature
 

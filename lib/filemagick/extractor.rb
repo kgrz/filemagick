@@ -2,10 +2,14 @@
 # are not enough bytes for the file type specified, an error is thrown
 # mentioning the reason.
 
+require 'forwardable'
+
 module Filemagick
   class Extractor
+    extend Forwardable
+
     attr_reader :file, :extracted_signature
-    def_delegators :@signature, :bytes_to_read_from_start, :starting_byte_offset
+    def_delegator :@signature, :bytes_to_read_from_start, :starting_byte_offset
 
     def initialize(file, signatures)
       @file = file
@@ -48,11 +52,11 @@ module Filemagick
     end
 
     def starting_byte_offset
-      @signatures["signature"]["offset"]
+      @signatures.first ? @signatures.first["offset"] : 0
     end
 
     def starting_hex_codes
-      @signatures["signature"]["hexcodes"]
+      @signatures.first["hexcodes"]
     end
   end
 end
